@@ -13,5 +13,6 @@ router.post("/credential/generate", credentialController.generateCredential);
 router.post("/credential/verifyProof", credentialController.verifyProof);
 router.get("/credential/has", credentialController.hasCredential);
 router.get("/credential/get", credentialController.getCredential);
+router.get("/credential/output", credentialController.getCredentialOutput);
 
 module.exports = router;

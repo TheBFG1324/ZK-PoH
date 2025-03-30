@@ -205,5 +205,19 @@ module.exports = {
       console.error("Error verifying proof:", error);
       return res.status(500).json({ error: error.message });
     }
-  }
+  },
+
+  // Endpoint to return the credential_output.json file as JSON.
+  getCredentialOutput: async (req, res) => {
+    try {
+      // Read the file synchronously.
+      const fileData = fs.readFileSync("/Users/camerondenton/Desktop/Github/actual/ZK-PoH/controller/script/credential_output.json", "utf8");
+      // Parse and send the JSON data.
+      const jsonData = JSON.parse(fileData);
+      return res.status(200).json(jsonData);
+    } catch (error) {
+      console.error("Error reading credential output file:", error);
+      return res.status(500).json({ error: "Failed to read credential output file" });
+    }
+  },
 };

@@ -21,6 +21,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './style.css'; // Include custom neuron background CSS
 import 'particles.js';
+// Import the fetchProofs function from its module.
+import fetchProofs from './api/API'; // Adjust the path as needed
 
 const theme = extendTheme({
   styles: {
@@ -60,7 +62,19 @@ function Background() {
     });
   }, []);
 
-  return <div id="particles-js" style={{ position: 'fixed', top: 0, left: 0, zIndex: 0, width: '100%', height: '100%' }} />;
+  return (
+    <div
+      id="particles-js"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 0,
+        width: '100%',
+        height: '100%',
+      }}
+    />
+  );
 }
 
 function PageWrapper({ children }) {
@@ -145,8 +159,12 @@ function LoadingPage() {
 
         {status === 'notHuman' && (
           <VStack spacing={4}>
-            <Text fontSize="lg" fontWeight="bold">You must be a verifiable human to vote.</Text>
-            <Text fontSize="sm" color="gray.500">Address: {userAddress}</Text>
+            <Text fontSize="lg" fontWeight="bold">
+              You must be a verifiable human to vote.
+            </Text>
+            <Text fontSize="sm" color="gray.500">
+              Address: {userAddress}
+            </Text>
             <Button colorScheme="blue" onClick={() => navigate('/verifying', { state: { address: userAddress } })}>
               Try Again
             </Button>
@@ -155,14 +173,18 @@ function LoadingPage() {
 
         {status === 'canVote' && (
           <VStack spacing={6}>
-            <Text fontSize="lg" fontWeight="bold">You are verified. Please vote below.</Text>
+            <Text fontSize="lg" fontWeight="bold">
+              You are verified. Please vote below.
+            </Text>
             <VoteButtons />
           </VStack>
         )}
 
         {status === 'failed' && (
           <VStack spacing={4}>
-            <Text fontSize="lg" color="red.500">Waiting for Metamask Connection...</Text>
+            <Text fontSize="lg" color="red.500">
+              Waiting for MetaMask Connection...
+            </Text>
             <Button onClick={() => navigate('/')}>Return Home</Button>
           </VStack>
         )}
@@ -173,42 +195,55 @@ function LoadingPage() {
 
 function VerifyingPage() {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(0);
-  const totalSteps = 165;
+  // State to hold the fetched proofs.
+  const [proofs, setProofs] = useState([]);
+  // State to track the current index being shown.
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const generateProof = (index) => {
-    return {
-      id: `0xproof${index.toString().padStart(4, '0')}`,
-      timestamp: new Date().toISOString(),
-      signature: `0xsig${index}${'abcdef'.repeat(10)}`,
-    };
-  };
-
-  const [currentProof, setCurrentProof] = useState(generateProof(0));
-
+  // Fetch proofs from the external function when the component mounts.
   useEffect(() => {
+    fetchProofs().then((fetchedProofs) => {
+      console.log("HERE")
+      console.log(fetchProofs)
+      setProofs(fetchedProofs);
+    });
+  }, []);
+
+  // Use an interval to iterate through the proofs.
+  useEffect(() => {
+    if (proofs.length === 0) return; // Wait until proofs are fetched.
     const interval = setInterval(() => {
-      setCurrentStep((prev) => {
-        if (prev >= totalSteps) {
+      setCurrentIndex((prev) => {
+        if (prev >= proofs.length - 1) {
           clearInterval(interval);
           setTimeout(() => navigate('/loading', { state: { retry: true } }), 1000);
           return prev;
         }
-        const nextProof = generateProof(prev + 1);
-        setCurrentProof(nextProof);
         return prev + 1;
       });
     }, 80);
     return () => clearInterval(interval);
-  }, [navigate]);
+  }, [proofs, navigate]);
+
+  const currentProof = proofs[currentIndex];
 
   return (
     <PageWrapper>
       <Card>
         <VStack spacing={4} w="full" alignItems="flex-start">
-          <Text fontSize="xl" fontWeight="bold" alignSelf="center">Verifying Proof...</Text>
-          <Text fontSize="sm" color="gray.500">Verifying {currentStep} of {totalSteps} Proofs</Text>
-          <Progress value={(currentStep / totalSteps) * 100} size="sm" colorScheme="blue" w="full" borderRadius="md" />
+          <Text fontSize="xl" fontWeight="bold" alignSelf="center">
+            Verifying Proof...
+          </Text>
+          <Text fontSize="sm" color="gray.500">
+            Verifying {proofs.length ? currentIndex + 1 : 0} of {proofs.length} Proofs
+          </Text>
+          <Progress
+            value={proofs.length ? ((currentIndex + 1) / proofs.length) * 100 : 0}
+            size="sm"
+            colorScheme="blue"
+            w="full"
+            borderRadius="md"
+          />
           <Box
             bg="gray.100"
             p={4}
@@ -220,7 +255,7 @@ function VerifyingPage() {
             textAlign="left"
           >
             <Code fontSize="xs" whiteSpace="pre-wrap" wordBreak="break-word">
-              {JSON.stringify(currentProof, null, 2)}
+              {currentProof ? JSON.stringify(currentProof, null, 2) : 'Loading...'}
             </Code>
           </Box>
         </VStack>
@@ -235,8 +270,12 @@ function VoteButtons() {
 
   return (
     <VStack spacing={4} w="full">
-      <Button colorScheme="green" size="lg" w="full" onClick={() => handleVote('Yes')}>Yes</Button>
-      <Button colorScheme="red" size="lg" w="full" onClick={() => handleVote('No')}>No</Button>
+      <Button colorScheme="green" size="lg" w="full" onClick={() => handleVote('Yes')}>
+        Yes
+      </Button>
+      <Button colorScheme="red" size="lg" w="full" onClick={() => handleVote('No')}>
+        No
+      </Button>
     </VStack>
   );
 }
@@ -249,7 +288,9 @@ function ThankYouPage() {
     <PageWrapper>
       <Card>
         <VStack spacing={6}>
-          <Text fontSize="3xl" fontWeight="bold">Thank You</Text>
+          <Text fontSize="3xl" fontWeight="bold">
+            Thank You
+          </Text>
           {vote && (
             <MotionText
               fontSize="xl"
