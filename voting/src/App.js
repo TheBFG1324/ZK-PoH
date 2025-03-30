@@ -176,6 +176,9 @@ function LoadingPage() {
             <Text fontSize="lg" fontWeight="bold">
               You are verified. Please vote below.
             </Text>
+            <Text fontSize="2xl" fontWeight="semibold">
+            Should AI systems be granted voting rights?
+            </Text>
             <VoteButtons />
           </VStack>
         )}
