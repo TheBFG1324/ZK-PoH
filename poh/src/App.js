@@ -3,6 +3,7 @@ import { ChakraProvider, Container , VStack, Text, Button, Code, Spinner, Image,
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaFingerprint } from "react-icons/fa";
+import fetchIpfsCIDs from "./api/API";
 
 const MotionBox = motion(Box);
 const MotionVStack = motion(VStack);
@@ -351,6 +352,7 @@ function PictureTakenPage() {
   const [status, setStatus] = useState("checking");
   const [progress, setProgress] = useState(0);
   const [verificationStep, setVerificationStep] = useState(0);
+  const [ipfsCIDs, setIpfsCIDs] = useState([]);
 
   const cardBg = useColorModeValue("rgba(255, 255, 255, 0.06)", "rgba(255, 255, 255, 0.04)");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
@@ -362,6 +364,18 @@ function PictureTakenPage() {
       100% { transform: scale(1); }
     }
   `;
+
+  useEffect(() => {
+    async function getCIDs() {
+      try {
+        const cids = await fetchIpfsCIDs();
+        setIpfsCIDs(cids);
+      } catch (error) {
+        console.error("Error fetching IPFS CIDs:", error);
+      }
+    }
+    getCIDs();
+  }, []);
 
   useEffect(() => {
     let timeout;
@@ -393,7 +407,7 @@ function PictureTakenPage() {
           clearInterval(interval);
           setStatus("completed");
         }
-      }, 30);
+      }, 100);
     }
 
     return () => {
@@ -455,6 +469,11 @@ function PictureTakenPage() {
             <Spinner size="xl" color="green.500" />
             <Text fontSize="lg" color="green.300">Generating Proofs...</Text>
             <Text fontSize="md">Step {verificationStep} / 165</Text>
+            {ipfsCIDs.length > 0 && (
+              <Text fontSize="sm" color="blue.300">
+                Proof Information IPFS CID: {ipfsCIDs[verificationStep]}
+              </Text>
+            )}
           </>
         )}
 
