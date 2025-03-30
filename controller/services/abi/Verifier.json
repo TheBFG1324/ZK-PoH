@@ -1,0 +1,161 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "credentialManagerAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "submitter",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "levelIndex",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "ipfsCID",
+				"type": "string"
+			}
+		],
+		"name": "ProofProcessed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "submitter",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "levelIndex",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "ipfsCID",
+				"type": "string"
+			}
+		],
+		"name": "ProofQueued",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "credentialManager",
+		"outputs": [
+			{
+				"internalType": "contract IZKPoHCredentialManager",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "processBatch",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "proofQueue",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "ipfsCID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "levelIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "submitter",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "ipfsCID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "levelIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "submitProof",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "trustedVerifiers",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

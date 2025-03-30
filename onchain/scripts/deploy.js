@@ -12,14 +12,14 @@ async function main() {
     console.log("HBF deployed to:", hbf.target);
   
     // Deploy the ZKPoH-Credential-Manager contract.
-    const CredentialManager = await ethers.getContractFactory("ZKPoHCredentialManager"); // Adjust the contract name if needed.
+    const CredentialManager = await ethers.getContractFactory("ZKPoHCredentialManager");
     const credentialManager = await CredentialManager.deploy();
     await credentialManager.waitForDeployment();
     console.log("ZKPoH-Credential-Manager deployed to:", credentialManager.target);
   
     // Deploy the Verifier contract, passing in the addresses of HBF and Credential Manager.
     const Verifier = await ethers.getContractFactory("Verifier");
-    const verifier = await Verifier.deploy(hbf.target, credentialManager.target);
+    const verifier = await Verifier.deploy(credentialManager.target);
     await verifier.waitForDeployment();
     console.log("Verifier deployed to:", verifier.target);
   }

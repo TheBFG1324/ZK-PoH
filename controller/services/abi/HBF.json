@@ -1,0 +1,136 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256[3][165]",
+				"name": "person",
+				"type": "uint256[3][165]"
+			}
+		],
+		"name": "checkIfEnrolled",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "level",
+				"type": "uint256"
+			}
+		],
+		"name": "getLevelArray",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "level",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "valueIndex",
+				"type": "uint256"
+			}
+		],
+		"name": "getValue",
+		"outputs": [
+			{
+				"internalType": "uint16",
+				"name": "",
+				"type": "uint16"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256[3][165]",
+				"name": "person",
+				"type": "uint256[3][165]"
+			}
+		],
+		"name": "insertIdentity",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256[3][165]",
+				"name": "person",
+				"type": "uint256[3][165]"
+			}
+		],
+		"name": "removeIdentity",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "level",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "packedIndices",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "packedData",
+				"type": "uint256[]"
+			}
+		],
+		"name": "setPackedDataBatch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "level",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "valueIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint16",
+				"name": "value",
+				"type": "uint16"
+			}
+		],
+		"name": "setValue",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

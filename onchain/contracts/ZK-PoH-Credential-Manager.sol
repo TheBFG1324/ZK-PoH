@@ -6,7 +6,7 @@ contract ZKPoHCredentialManager {
     uint256 public constant THRESHOLD = 21;
     // Expiration period set to one month (30 days).
     uint256 public constant EXPIRATION_PERIOD = 2592000;
-
+    
     struct Credential {
         string[] proofs;
         uint256 start;
