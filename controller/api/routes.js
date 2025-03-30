@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const proofController = require("../controllers/proofController");
+const credentialController = require("../controllers/credentialController");
 
 // Identity endpoints
-router.post("/identity/generate", proofController.generateIndices);
-router.post("/identity/enroll", proofController.enrollIdentity);
-router.post("/identity/enrolled", proofController.checkIdentityEnrolled);
+router.post("/identity/generate", credentialController.generateIndices);
+router.post("/identity/enroll", credentialController.enrollIdentity);
+router.post("/identity/enrolled", credentialController.checkIdentityEnrolled);
 
 // Credential endpoints
-router.post("/credential/generate", proofController.generateCredential);
-router.post("/credential/verifyProof", proofController.verifyProof);
-router.get("/credential/has", proofController.hasCredential);
-router.get("/credential/get", proofController.getCredential);
+router.post("/credential/generate", credentialController.generateCredential);
+router.post("/credential/verifyProof", credentialController.verifyProof);
+router.get("/credential/has", credentialController.hasCredential);
+router.get("/credential/get", credentialController.getCredential);
 
 module.exports = router;

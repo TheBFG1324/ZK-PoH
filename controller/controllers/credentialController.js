@@ -1,9 +1,11 @@
+const fs = require("fs");
 const { createHBFInstance, generateIdentity, enrollPerson } = require("../hbf/hbfInstance");
 const { 
   insertIdentity, 
   checkIfEnrolled, 
   isCredentialViable, 
-  getCredential 
+  getCredential,
+  submitProof
 } = require("../services/contractService");
 const { 
     uploadJson,
@@ -87,39 +89,50 @@ module.exports = {
       const hbfInstance = createHBFInstance(NUM_LEVELS, LEVEL_SIZE);
       enrollPerson(hbfInstance, identityIndices);
 
+      // This array will hold the proof details for each level.
+      let proofCollection = [];
+
       // Loop through levels to generate and submit proofs.
       for (let level = 0; level < PROOF_THRESHOLD; level++) {
         // Retrieve the level array from the local HBF instance for the current level.
-        // (Assumes hbfInstance has a method getLevelArray; adjust if needed.)
-        const levelArray = hbfInstance.levels(level);
+        const levelArray = hbfInstance.levels[level];
         
         // Get the user's index at the current level.
-        // (Assumes identityIndices is an array where each element corresponds to a level.)
         const userIndexes = identityIndices[level];
         if (userIndexes === undefined) {
           return res.status(400).json({ error: `Missing index for level ${level}` });
         }
         
         // Generate the proof and verifying key by calling the ZKP backend.
-        // Pass the levelArray as public input and userIndex as private input.
         const proofResponse = await generateProof(levelArray, userIndexes);
         console.log("Proof generation response:", proofResponse);
         const { proof, verifying_key } = proofResponse;
         
         // Upload the generated proof data to IPFS.
-        const proofData = { proof, verifying_key };
-        const ipfsCID = await uploadJson(proofData);
+        const ipfsCID = await uploadJson({ proof, verifying_key });
+        
+        // Save proof data into our collection.
+        proofCollection.push({
+          level: level,
+          proof: proof,
+          verifying_key: verifying_key,
+          levelArray: levelArray,
+          ipfsCID: ipfsCID
+        });
         
         // Call the verifier contract with the generated proof data.
-        // Here, result is assumed to be true since the proof generation succeeded.
         const receipt = await submitProof(ipfsCID, level);
         console.log(`Proof for level ${level} submitted. Transaction hash: ${receipt}`);
       }
       
-      // Procces Batch
-      console.log("proccessing batch");
+      // Write the collected proof data to a file.
+      fs.writeFileSync("credential_output.json", JSON.stringify({ proofs: proofCollection }, null, 2));
+      console.log("Proof data written to credential_output.json");
+
+      // Process batch if needed.
+      console.log("processing batch");
       const processReceipt = await processBatch();
-      console.log("done proccesing batch: ", processReceipt)
+      console.log("done processing batch: ", processReceipt);
 
       // Once the threshold is reached, retrieve the credential from the blockchain.
       const credential = await getCredential(userAddress);
