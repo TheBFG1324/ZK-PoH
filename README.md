@@ -22,11 +22,11 @@
  - Rust: Core logic and backend services.
  - ark: Rust package used for generating ZK-SNARK proofs.
 
- ### Smart Contracts  Blockchain:
+ ### Smart Contracts and Blockchain:
  - Solidity: Development of smart contracts.
  - Hardhat: Local blockchain development and testing framework.
 
- ### Storage  Pinning:
+ ### Storage Pinning:
  - IPFS: Decentralized file storage.
  - Pinata: Pinning service to maintain persistent file availability.
 
