@@ -34,4 +34,6 @@
  - React: Two separate frontends for PoH credential generation and mock voting.
  - Chakra UI: Component library for streamlined and accessible UI development.
 
+ ## Demo
+ [Video](https://www.youtube.com/watch?v=rtAEg6eRmoI)
  ---
