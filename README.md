@@ -18,19 +18,19 @@
 
  ## Technology Stack
 
- #Backend:
+ ### Backend:
  - Rust: Core logic and backend services.
  - ark: Rust package used for generating ZK-SNARK proofs.
 
- #Smart Contracts  Blockchain:
+ ### Smart Contracts  Blockchain:
  - Solidity: Development of smart contracts.
  - Hardhat: Local blockchain development and testing framework.
 
- #Storage  Pinning:
+ ### Storage  Pinning:
  - IPFS: Decentralized file storage.
  - Pinata: Pinning service to maintain persistent file availability.
 
- #Frontends:
+ ### Frontends:
  - React: Two separate frontends for PoH credential generation and mock voting.
  - Chakra UI: Component library for streamlined and accessible UI development.
 
